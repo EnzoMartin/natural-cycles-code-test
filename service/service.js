@@ -65,16 +65,20 @@ class Service {
   }
 
   setupRoutes() {
-    this.server.get('/a', (req, res) => {
-      return app.render(req, res, '/b', req.query)
+    this.server.get('/users', (req, res) => {
+      return app.render(req, res, '/users')
     })
 
-    this.server.get('/b', (req, res) => {
-      return app.render(req, res, '/a', req.query)
+    this.server.post('/users', (req, res) => {
+      return res.json('')
     })
 
-    this.server.get('/posts/:id', (req, res) => {
-      return app.render(req, res, '/posts', { id: req.params.id })
+    this.server.put('/users/:id', (req, res) => {
+      return res.json('')
+    })
+
+    this.server.delete('/users/:id', (req, res) => {
+      return res.json('')
     })
 
     this.server.get('*', (req, res) => {
@@ -118,4 +122,4 @@ class Service {
   }
 }
 
-new Service()
+module.exports = Service

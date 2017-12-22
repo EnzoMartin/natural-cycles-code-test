@@ -16,13 +16,13 @@
     "node": ">=8",
     "npm": ">=5"
   },
-  "main": "./service/service.js",
+  "main": "./service/start.js",
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "test": "nyc mocha --full-trace --recursive",
     "test:watch": "nyc mocha --full-trace --recursive -w",
-    "build": "next build",
+    "build": "next build ./client",
     "dev": "nodemon --watch ./service $npm_package_main | bunyan -o short --color",
     "db-up": "db-migrate up --verbose",
     "db-down": "db-migrate down --verbose"
@@ -43,8 +43,6 @@
     "express-session": "^1.15.6",
     "mysql": "^2.15.0",
     "next": "^4.2.1",
-    "node-sass": "^4.7.2",
-    "normalize.css": "^7.0.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

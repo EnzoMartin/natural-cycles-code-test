@@ -1,8 +1,10 @@
-import Head from './head'
 import Link from 'next/link'
 
 const links = [
-  { href: 'https://github.com/segmentio/create-next-app', label: 'Github' },
+  {
+    href: 'https://github.com/EnzoMartin/natural-cycles-code-test',
+    label: 'Github',
+  },
 ].map(link => {
   link.key = `nav-link-${link.href}-${link.label}`
   return link
@@ -30,8 +32,9 @@ const Nav = () => (
     <style jsx>{`
       :global(body) {
         margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Avenir,
-          Helvetica, sans-serif;
+        padding: 0;
+        background: #999;
+        font-family: Roboto, Helvetica, sans-serif;
       }
       nav {
         text-align: center;
