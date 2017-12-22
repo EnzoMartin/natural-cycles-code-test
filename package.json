@@ -22,7 +22,7 @@
     "lint:fix": "eslint --fix .",
     "test": "nyc mocha --full-trace --recursive",
     "test:watch": "nyc mocha --full-trace --recursive -w",
-    "build": "next build",
+    "build": "next build ./client",
     "dev": "nodemon --watch ./service $npm_package_main | bunyan -o short --color",
     "db-up": "db-migrate up --verbose",
     "db-down": "db-migrate down --verbose"
