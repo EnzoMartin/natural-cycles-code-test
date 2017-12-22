@@ -44,13 +44,13 @@ WORKDIR /usr/src/app/
 COPY --from=Build /usr/src/app/node_modules/ ./node_modules
 
 # Copy files
-COPY ./package.json ./
-COPY ./config.js ./
 COPY ./database.json ./
+COPY ./package.json ./
 
 # Copy application directories
 COPY ./migrations/ ./migrations
 COPY --from=Build /usr/src/app/service/ ./service
+COPY --from=Build /usr/src/app/.build/ ./.build
 
 # Ready to go
-CMD [ "node", "app.js" ]
+CMD [ "node", "./service/service.js" ]

@@ -4,6 +4,6 @@ module.exports = {
   useTabs: false,
   semi: false,
   singleQuote: true,
-  trailingComma: 'all',
+  trailingComma: 'es5', // TODO: Resolve local issues with 'all' option
   bracketSpacing: true,
 }

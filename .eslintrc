@@ -2,17 +2,14 @@
   "extends": ["prettier"],
   "plugins": ["prettier"],
   "parserOptions": {
-    "ecmaVersion": 6
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
   },
   "rules": {
     "prettier/prettier": "error",
-    "comma-dangle": [2, {
-      "arrays": "always-multiline",
-      "objects": "always-multiline",
-      "imports": "always-multiline",
-      "exports": "always-multiline",
-      "functions": "ignore"
-    }],
+    "comma-dangle": [2, "always-multiline"],
     "semi": [2, "never"]
   },
   "env": {
