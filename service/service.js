@@ -118,4 +118,4 @@ class Service {
   }
 }
 
-new Service()
+module.exports = Service

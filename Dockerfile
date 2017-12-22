@@ -53,4 +53,4 @@ COPY --from=Build /usr/src/app/service/ ./service
 COPY --from=Build /usr/src/app/.build/ ./.build
 
 # Ready to go
-CMD [ "node", "./service/service.js" ]
+CMD [ "node", "./service/start.js" ]
