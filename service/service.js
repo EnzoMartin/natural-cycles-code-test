@@ -11,9 +11,13 @@ const users = require('./modules/users')
 const bunyan = require('express-bunyan-logger')
 const session = require('express-session')
 const Store = require('express-mysql-session')(session) // TODO: Move to Redis if added later
+const bodyParser = require('body-parser')
+const compression = require('compression')
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
 
 // Configuration
-const { service, logger, db, storeConfig, signals } = config
+const { service, logger, db, storeConfig, signals, admin } = config
 const app = next(config.next)
 const handle = app.getRequestHandler()
 
@@ -36,6 +40,7 @@ class Service {
         })
 
         this.setupMiddleware()
+        this.setupAuth()
         this.setupRoutes()
         this.start()
       })
@@ -44,7 +49,42 @@ class Service {
       })
   }
 
+  setupAuth() {
+    passport.use(
+      new LocalStrategy({}, (username, password, done) => {
+        if (username === admin.username && password === admin.password) {
+          done(null, { username })
+        } else {
+          done(null, false)
+        }
+      })
+    )
+
+    passport.serializeUser((user, done) => {
+      done(null, user)
+    })
+
+    passport.deserializeUser((user, done) => {
+      done(null, user)
+    })
+
+    this.server.use(passport.initialize())
+    this.server.use(passport.session())
+  }
+
   setupMiddleware() {
+    this.server.use(bodyParser.urlencoded({ extended: false }))
+    this.server.use(bodyParser.json())
+
+    this.server.use(
+      compression({
+        filter: function(req, res) {
+          return /json|text|javascript|css/.test(res.getHeader('Content-Type'))
+        },
+        level: 9,
+      })
+    )
+
     this.server.use(
       bunyan({
         logger: this.log,
@@ -58,17 +98,68 @@ class Service {
         ],
       })
     )
+
     this.server.use(
       session({
         store: this.store,
         ...service.cookie,
       })
     )
+
+    this.server.set('x-powered-by', false)
     this.server.set('trust proxy', 1)
   }
 
+  ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+      if (req.session.redirectTo && req.session.redirectTo !== '/login') {
+        const redirectTo = req.session.redirectTo
+        delete req.session.redirectTo
+        res.redirect(redirectTo)
+      } else {
+        next()
+      }
+    } else {
+      res.format({
+        'text/html': () => {
+          req.session.redirectTo = req.originalUrl
+          res.redirect('/login')
+        },
+        'application/json': () => {
+          res.status(401)
+          res.json({ error: 'Not authenticated' })
+        },
+      })
+    }
+  }
+
+  ensureNotAuthenticated(req, res, next) {
+    if (req.isUnauthenticated()) {
+      next()
+    } else {
+      res.redirect('/users')
+    }
+  }
+
   setupRoutes() {
-    this.server.get('/users', (req, res) => {
+    this.server.get('/logout', (req, res) => {
+      req.logout()
+      return res.redirect('/login')
+    })
+
+    this.server.get('/login', this.ensureNotAuthenticated, (req, res) => {
+      return app.render(req, res, '/login')
+    })
+
+    this.server.post(
+      '/login',
+      passport.authenticate('local', {
+        successRedirect: '/users',
+        failureRedirect: '/login',
+      })
+    )
+
+    this.server.get('/users', this.ensureAuthenticated, (req, res) => {
       users.get((err, data) => {
         if (err) {
           req.log.error({ err }, 'Failed to fetch users from database')
@@ -80,15 +171,15 @@ class Service {
       })
     })
 
-    this.server.post('/users', (req, res) => {
+    this.server.post('/users', this.ensureAuthenticated, (req, res) => {
       return res.json(users.create(req.body))
     })
 
-    this.server.put('/users/:id', (req, res) => {
+    this.server.put('/users/:id', this.ensureAuthenticated, (req, res) => {
       return res.json(users.update(req.params.id, req.body))
     })
 
-    this.server.delete('/users/:id', (req, res) => {
+    this.server.delete('/users/:id', this.ensureAuthenticated, (req, res) => {
       return res.json(users.remove(req.params.id))
     })
 

@@ -11,10 +11,10 @@ export default () => (
       <p className="description">Please sign in</p>
 
       <div className="row">
-        <form>
+        <form action="/login" method="post">
           <label>
-            Email:
-            <input name="email" type="text" />
+            Username:
+            <input name="username" type="text" />
           </label>
           <label>
             Password:
