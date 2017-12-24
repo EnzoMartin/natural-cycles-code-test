@@ -198,7 +198,7 @@ class Service {
             res.status(500)
           }
 
-          res.json(err || 'true')
+          res.json({ success: !err })
           next()
         })
       }
@@ -214,7 +214,7 @@ class Service {
             res.status(500)
           }
 
-          res.json(err || 'true')
+          res.json({ success: !err })
           next()
         })
       }
