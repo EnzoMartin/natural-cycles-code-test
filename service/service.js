@@ -69,7 +69,15 @@ class Service {
 
   setupRoutes() {
     this.server.get('/users', (req, res) => {
-      return app.render(req, res, '/users', users.get())
+      users.get((err, data) => {
+        if (err) {
+          req.log.error({ err }, 'Failed to fetch users from database')
+          res.status(500)
+          data = []
+        }
+
+        app.render(req, res, '/users', data)
+      })
     })
 
     this.server.post('/users', (req, res) => {

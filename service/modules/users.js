@@ -1,35 +1,11 @@
+const { db } = require('../config')
+
 module.exports = {
-  get: () => {
-    return [
-      {
-        id: 'id',
-        email: 'a@a.com',
-      },
-      {
-        id: 'id3',
-        email: 'a@a.com',
-      },
-      {
-        id: 'id1',
-        email: 'a@a.com',
-      },
-      {
-        id: 'id2',
-        email: 'a@a.com',
-      },
-      {
-        id: 'id5',
-        email: 'a@a.com',
-      },
-      {
-        id: 'id6',
-        email: 'a@a.com',
-      },
-      {
-        id: 'id8',
-        email: 'a@a.com',
-      },
-    ]
+  get: callback => {
+    db.query(
+      'SELECT id, email FROM users WHERE deletedAt IS NULL ORDER BY email',
+      callback
+    )
   },
   create: () => {
     return [
