@@ -117,6 +117,8 @@ class Service {
         const redirectTo = req.session.redirectTo
         delete req.session.redirectTo
         res.redirect(redirectTo)
+      } else {
+        next()
       }
     } else {
       res.format({
@@ -130,16 +132,14 @@ class Service {
         },
       })
     }
-
-    next()
   }
 
   ensureNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
       res.redirect('/users')
+    } else {
+      next()
     }
-
-    next()
   }
 
   setupAuthRoutes() {
