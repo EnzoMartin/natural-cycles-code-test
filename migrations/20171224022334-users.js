@@ -1,5 +1,6 @@
 const async = require('async')
 const uuid = require('uuid')
+const { getDbDate } = require('../service/utils')
 
 let dbm
 let type
@@ -58,6 +59,12 @@ exports.up = function(db, callback) {
         'users',
         ['id', 'email'],
         [uuid.v4(), 'marco@italianstallions.com']
+      ),
+      db.insert.bind(
+        db,
+        'users',
+        ['id', 'email', 'deletedAt'],
+        [uuid.v4(), 'tammy@birdperson.com', getDbDate()]
       ),
     ],
     callback
