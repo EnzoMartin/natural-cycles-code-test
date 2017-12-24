@@ -52,6 +52,10 @@ module.exports = {
       saveUninitialized: false,
     },
   },
+  admin: {
+    username: process.env.ADMIN_USERNAME || 'admin',
+    password: process.env.ADMIN_PASSWORD || 'thereisnospoon',
+  },
   next: {
     dev: isDev,
     dir: './client',
