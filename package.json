@@ -24,8 +24,8 @@
     "test:watch": "nyc mocha --full-trace --recursive -w",
     "build": "next build ./client",
     "dev": "nodemon --watch ./service $npm_package_main | bunyan -o short --color",
-    "db-up": "db-migrate up --verbose",
-    "db-down": "db-migrate down --verbose"
+    "db:up": "db-migrate up --verbose",
+    "db:down": "db-migrate down --verbose"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.0.1",
