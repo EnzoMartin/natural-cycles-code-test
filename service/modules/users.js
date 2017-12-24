@@ -43,7 +43,7 @@ module.exports = {
     const dateTime = getDbDate()
 
     return db.query(
-      'UPDATE users SET updatedAt = ?, deletedAt = ? WHERE id = ?',
+      'UPDATE users SET modifiedAt = ?, deletedAt = ? WHERE id = ?',
       [dateTime, dateTime, id],
       callback
     )
@@ -58,7 +58,7 @@ module.exports = {
   update: (id, email, callback) => {
     if (verifyEmail(email)) {
       return db.query(
-        'UPDATE users SET email = ?, updatedAt = ? WHERE id = ?',
+        'UPDATE users SET email = ?, modifiedAt = ? WHERE id = ?',
         [email, getDbDate(), id],
         callback
       )
