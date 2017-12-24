@@ -5,7 +5,7 @@ import Nav from '../components/nav'
 
 export default class extends Component {
   static getInitialProps({ query, req }) {
-    const { error, email } = req.query || {}
+    const { error, email } = (req && req.query) || {}
     return { users: query, error, email }
   }
 
@@ -20,7 +20,11 @@ export default class extends Component {
             <form action="/users" method="post">
               <label>
                 Email:
-                <input name="email" type="email" value={this.props.email} />
+                <input
+                  name="email"
+                  type="email"
+                  defaultValue={this.props.email}
+                />
               </label>
               <button type="submit">Add</button>
               {this.props.error ? (
