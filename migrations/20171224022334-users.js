@@ -1,4 +1,5 @@
 const async = require('async')
+const uuid = require('uuid')
 
 let dbm
 let type
@@ -28,6 +29,36 @@ exports.up = function(db, callback) {
         },
         deletedAt: { type: 'datetime' },
       }),
+      db.insert.bind(
+        db,
+        'users',
+        ['id', 'email'],
+        [uuid.v4(), 'picard@hogwarts.com']
+      ),
+      db.insert.bind(
+        db,
+        'users',
+        ['id', 'email'],
+        [uuid.v4(), 'riddick@mylittlepony.com']
+      ),
+      db.insert.bind(
+        db,
+        'users',
+        ['id', 'email'],
+        [uuid.v4(), 'logan@mordor.com']
+      ),
+      db.insert.bind(
+        db,
+        'users',
+        ['id', 'email'],
+        [uuid.v4(), 'starlord@zune.com']
+      ),
+      db.insert.bind(
+        db,
+        'users',
+        ['id', 'email'],
+        [uuid.v4(), 'marco@italianstallions.com']
+      ),
     ],
     callback
   )
