@@ -16,7 +16,7 @@ Repository containing code challenge/test from Natural Cycles, original prompt i
     DB_HOST=127.0.0.1
     DB_DATABASE=<db name>
     ```
-- Run `npm run db-up`
+- Run `npm run db:up`
 - Run `npm run dev`
 
 ___

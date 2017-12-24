@@ -4,6 +4,9 @@ const express = require('express')
 const async = require('async')
 const next = require('next')
 
+// Routes
+const users = require('./modules/users')
+
 // Middleware imports
 const bunyan = require('express-bunyan-logger')
 const session = require('express-session')
@@ -66,19 +69,27 @@ class Service {
 
   setupRoutes() {
     this.server.get('/users', (req, res) => {
-      return app.render(req, res, '/users')
+      users.get((err, data) => {
+        if (err) {
+          req.log.error({ err }, 'Failed to fetch users from database')
+          res.status(500)
+          data = []
+        }
+
+        app.render(req, res, '/users', data)
+      })
     })
 
     this.server.post('/users', (req, res) => {
-      return res.json('')
+      return res.json(users.create(req.body))
     })
 
     this.server.put('/users/:id', (req, res) => {
-      return res.json('')
+      return res.json(users.update(req.params.id, req.body))
     })
 
     this.server.delete('/users/:id', (req, res) => {
-      return res.json('')
+      return res.json(users.remove(req.params.id))
     })
 
     this.server.get('*', (req, res) => {
