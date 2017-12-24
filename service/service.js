@@ -41,6 +41,7 @@ class Service {
 
         this.setupMiddleware()
         this.setupAuth()
+        this.setupAuthRoutes()
         this.setupRoutes()
         this.start()
       })
@@ -134,14 +135,14 @@ class Service {
   }
 
   ensureNotAuthenticated(req, res, next) {
-    if (req.isUnauthenticated()) {
-      next()
-    } else {
+    if (req.isAuthenticated()) {
       res.redirect('/users')
+    } else {
+      next()
     }
   }
 
-  setupRoutes() {
+  setupAuthRoutes() {
     this.server.get('/logout', (req, res) => {
       req.logout()
       return res.redirect('/login')
@@ -158,7 +159,9 @@ class Service {
         failureRedirect: '/login',
       })
     )
+  }
 
+  setupRoutes() {
     this.server.get('/users', this.ensureAuthenticated, (req, res) => {
       users.get((err, data) => {
         if (err) {
@@ -171,17 +174,51 @@ class Service {
       })
     })
 
-    this.server.post('/users', this.ensureAuthenticated, (req, res) => {
-      return res.json(users.create(req.body))
+    this.server.post('/users', this.ensureAuthenticated, (req, res, next) => {
+      users.create(req.body.email, err => {
+        if (err) {
+          req.log.error({ err }, 'Failed to create new user')
+          res.status(500)
+          res.redirect(`/users?error=true&email=${req.body.email}`)
+        } else {
+          res.redirect('/users')
+        }
+
+        next()
+      })
     })
 
-    this.server.put('/users/:id', this.ensureAuthenticated, (req, res) => {
-      return res.json(users.update(req.params.id, req.body))
-    })
+    this.server.put(
+      '/users/:id',
+      this.ensureAuthenticated,
+      (req, res, next) => {
+        users.update(req.params.id, req.body.email, err => {
+          if (err) {
+            req.log.error({ err, id: req.params.id }, 'Failed to update user')
+            res.status(500)
+          }
 
-    this.server.delete('/users/:id', this.ensureAuthenticated, (req, res) => {
-      return res.json(users.remove(req.params.id))
-    })
+          res.json({ success: !err })
+          next()
+        })
+      }
+    )
+
+    this.server.delete(
+      '/users/:id',
+      this.ensureAuthenticated,
+      (req, res, next) => {
+        users.remove(req.params.id, err => {
+          if (err) {
+            req.log.error({ err, id: req.params.id }, 'Failed to delete user')
+            res.status(500)
+          }
+
+          res.json({ success: !err })
+          next()
+        })
+      }
+    )
 
     this.server.get('*', (req, res) => {
       return handle(req, res)

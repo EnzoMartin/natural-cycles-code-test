@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 
 import Head from '../components/head'
 import Nav from '../components/nav'
+import User from '../components/user'
 
 export default class extends Component {
-  static getInitialProps({ query }) {
-    return { users: query }
+  static getInitialProps({ query, req }) {
+    const { error, email } = (req && req.query) || {}
+    return { users: query, error, email }
   }
 
   render() {
@@ -16,14 +18,28 @@ export default class extends Component {
 
         <div className="hero">
           <div className="row">
-            <label>
-              Email:
-              <input name="name" />
-            </label>
-            <button>Add</button>
+            <form action="/users" method="post">
+              <div>Add a new user:</div>
+              <div>
+                <label>
+                  <input
+                    name="email"
+                    type="email"
+                    placeholder="Email (me@email.com)"
+                    defaultValue={this.props.email}
+                  />
+                </label>
+                <button type="submit">Add</button>
+              </div>
+              {this.props.error ? (
+                <div className="error">
+                  Failed to create user, email is likely invalid
+                </div>
+              ) : null}
+            </form>
           </div>
           <div className="row">
-            <table cellPadding="0" cellSpacing="0" border="0">
+            <table width="100%" cellPadding="0" cellSpacing="0" border="0">
               <thead>
                 <tr>
                   <th>Email</th>
@@ -32,14 +48,7 @@ export default class extends Component {
               </thead>
               <tbody>
                 {this.props.users.map(item => {
-                  return (
-                    <tr key={item.id}>
-                      <td>{item.email}</td>
-                      <td>
-                        <button>Delete</button>
-                      </td>
-                    </tr>
-                  )
+                  return <User key={item.id} id={item.id} email={item.email} />
                 })}
               </tbody>
             </table>
@@ -51,6 +60,7 @@ export default class extends Component {
             .hero {
               width: 100%;
               color: #333;
+              text-align: left;
             }
             .title {
               margin: 0;
@@ -59,9 +69,16 @@ export default class extends Component {
               line-height: 1.15;
               font-size: 48px;
             }
+            table td,
+            table th {
+              text-align: left;
+            }
             .title,
             .description {
               text-align: center;
+            }
+            .error {
+              color: red;
             }
             .row {
               max-width: 880px;
