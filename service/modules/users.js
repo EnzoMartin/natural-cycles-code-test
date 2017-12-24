@@ -1,6 +1,6 @@
 const uuid = require('uuid')
 
-const { getDbDate } = require('../utils')
+const { getDbDate, verifyEmail } = require('../utils')
 const { db } = require('../config')
 
 module.exports = {
@@ -27,7 +27,11 @@ module.exports = {
       id: uuid.v4(),
     }
 
-    return db.query('INSERT INTO users SET ?', data, callback)
+    if (verifyEmail(email)) {
+      return db.query('INSERT INTO users SET ?', data, callback)
+    } else {
+      return callback(new Error('Email is not valid'))
+    }
   },
   /**
    * Soft delete a user
@@ -52,10 +56,14 @@ module.exports = {
    * @returns {*}
    */
   update: (id, email, callback) => {
-    return db.query(
-      'UPDATE users SET email = ?, updatedAt = ? WHERE id = ?',
-      [email, getDbDate(), id],
-      callback
-    )
+    if (verifyEmail(email)) {
+      return db.query(
+        'UPDATE users SET email = ?, updatedAt = ? WHERE id = ?',
+        [email, getDbDate(), id],
+        callback
+      )
+    } else {
+      return callback(new Error('Email is not valid'))
+    }
   },
 }

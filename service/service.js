@@ -179,9 +179,11 @@ class Service {
         if (err) {
           req.log.error({ err }, 'Failed to create new user')
           res.status(500)
+          res.redirect(`/users?error=true&email=${req.body.email}`)
+        } else {
+          res.redirect('/users')
         }
 
-        res.json(err || 'true')
         next()
       })
     })

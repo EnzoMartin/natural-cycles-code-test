@@ -4,8 +4,9 @@ import Head from '../components/head'
 import Nav from '../components/nav'
 
 export default class extends Component {
-  static getInitialProps({ query }) {
-    return { users: query }
+  static getInitialProps({ query, req }) {
+    const { error, email } = req.query || {}
+    return { users: query, error, email }
   }
 
   render() {
@@ -16,11 +17,18 @@ export default class extends Component {
 
         <div className="hero">
           <div className="row">
-            <label>
-              Email:
-              <input name="name" />
-            </label>
-            <button>Add</button>
+            <form action="/users" method="post">
+              <label>
+                Email:
+                <input name="email" type="email" value={this.props.email} />
+              </label>
+              <button type="submit">Add</button>
+              {this.props.error ? (
+                <div className="error">
+                  Failed to create user, email is likely invalid
+                </div>
+              ) : null}
+            </form>
           </div>
           <div className="row">
             <table cellPadding="0" cellSpacing="0" border="0">
@@ -62,6 +70,9 @@ export default class extends Component {
             .title,
             .description {
               text-align: center;
+            }
+            .error {
+              color: red;
             }
             .row {
               max-width: 880px;

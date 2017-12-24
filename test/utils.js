@@ -11,4 +11,12 @@ describe('utils module', () => {
       )
     ).toBe(true)
   })
+
+  it('verifies that most emails are valid and returns true/false', () => {
+    expect(typeof utils.verifyEmail).toBe('function')
+    expect(utils.verifyEmail('test@test.com')).toBe(true)
+    expect(utils.verifyEmail('tt@te.net')).toBe(true)
+    expect(utils.verifyEmail('test@testcom')).toBe(false)
+    expect(utils.verifyEmail('testtest.com')).toBe(false)
+  })
 })
