@@ -11,7 +11,7 @@ const users = require('./modules/users')
 // Middleware imports
 const bunyan = require('express-bunyan-logger')
 const session = require('express-session')
-const Store = require('express-mysql-session')(session) // TODO: Move to Redis if added later
+const Store = require('express-mysql-session')(session)
 const bodyParser = require('body-parser')
 const compression = require('compression')
 const passport = require('passport')
@@ -164,6 +164,10 @@ class Service {
   }
 
   setupRoutes() {
+    this.server.get('/', (req, res) => {
+      res.redirect('/users')
+    })
+
     this.server.get('/users', this.ensureAuthenticated, (req, res) => {
       users.get((err, data) => {
         if (err) {

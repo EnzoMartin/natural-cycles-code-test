@@ -1,5 +1,5 @@
 #### BUILD IMAGE ####
-FROM node:9 AS Build
+FROM node:9-alpine AS Build
 
 ARG NODE_ENV
 
@@ -48,9 +48,11 @@ COPY ./database.json ./
 COPY ./package.json ./
 
 # Copy application directories
-COPY ./migrations/ ./migrations
-COPY --from=Build /usr/src/app/service/ ./service
-COPY --from=Build /usr/src/app/.build/ ./.build
+COPY ./migrations ./migrations
+COPY --from=Build /usr/src/app/client ./client
+COPY --from=Build /usr/src/app/service ./service
+COPY --from=Build /usr/src/app/.build ./.next
+COPY --from=Build /usr/src/app/.build ./.build
 
 # Ready to go
 CMD [ "node", "./service/start.js" ]

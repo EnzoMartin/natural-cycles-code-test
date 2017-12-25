@@ -15,7 +15,9 @@ export default class Nav extends Component {
             </a>
           </li>
           <ul>
-            {!this.props.hideRightNav ? <a href="/logout">Logout</a> : null}
+            <li>
+              {!this.props.hideRightNav ? <a href="/logout">Logout</a> : null}
+            </li>
           </ul>
         </ul>
 
@@ -23,8 +25,11 @@ export default class Nav extends Component {
           :global(body) {
             margin: 0;
             padding: 0;
-            background: #999;
+            background: rgba(0, 0, 0, 0)
+              linear-gradient(to right, rgb(128, 55, 155), rgb(163, 26, 126))
+              repeat scroll 0% 0%;
             font-family: Roboto, Helvetica, sans-serif;
+            color: #fff;
           }
           nav {
             text-align: center;
@@ -41,9 +46,13 @@ export default class Nav extends Component {
             padding: 6px 8px;
           }
           a {
-            color: #067df7;
+            color: #fff;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 16px;
+            transition: opacity 0.1s ease-out;
+          }
+          a:hover {
+            opacity: 0.5;
           }
         `}</style>
       </nav>

@@ -18,6 +18,44 @@ Repository containing code challenge/test from Natural Cycles, original prompt i
     ```
 - Run `npm run db:up`
 - Run `npm run dev`
+- Go to http://localhost:3000/
+
+## Environment variables
+
+| Name | Default | Description |
+| ------------- | ------------- |  ------------- |
+| NODE_ENV | `development` | Used to determine whether to run in production mode |
+| PORT | `3000` | Port to run on |
+| DB_HOST | | Address of the database host |
+| DB_USER | | Database user to connect with |
+| DB_PASSWORD | | Data user password to connect with |
+| DB_PORT | `3306` | Port of the database server |
+| DB_DATABASE | | Database to use on the database server |
+| ADMIN_USERNAME | `admin` | Username to access the site |
+| ADMIN_PASSWORD | `thereisnospoon` | Password to access the site |
+
+## Production consideration
+
+Current implementation is "goodly" (good enough) production ready, with some caveats:
+- Admin login is handled via env vars
+- Data updates are only noticeable on page reload
+- No data sanitization
+- No pagination, sorting, filtering
+
+The following are a list of some of the features/changes that should be considered to run this as a production service:
+
+- Use a proper administrator authentication method against a database with bcrypt encrypted passwords
+- Run 2+ instances behind a load balancer such as HAProxy
+- Move sessions to Redis with a TTL
+- Implement WebSocket updates of user data with Redis PubSub to broadcast to all connected clients
+- Add audit logging of actions by admin and what data was changed
+- Add a log collector that ships to Kibana or similar
+- Add application metrics such as with DataDog
+- Add admin account failed login attempts lockout
+- Map out data schema via simple models (JS Classes)
+- Scrub & escape incoming data from forms
+- Update UI with filtering, sorting, and pagination
+- Proper deployment pipeline for production, docker-compose is limited
 
 ___
 
