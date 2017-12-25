@@ -18,9 +18,9 @@
   "production": {
     "driver": "mysql",
     "host": {"ENV": "DB_HOST"},
-    "user": {"ENV": "MYSQL_USER"},
+    "user": {"ENV": "DB_USER"},
     "port": {"ENV": "DB_PORT"},
-    "password": {"ENV": "MYSQL_PASSWORD"},
-    "database": "natural-cycles"
+    "password": {"ENV": "DB_PASSWORD"},
+    "database": {"ENV": "DB_DATABASE"}
   }
 }
