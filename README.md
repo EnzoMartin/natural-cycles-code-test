@@ -18,6 +18,7 @@ Repository containing code challenge/test from Natural Cycles, original prompt i
     ```
 - Run `npm run db:up`
 - Run `npm run dev`
+- Go to http://localhost:3000/
 
 ## Environment variables
 
