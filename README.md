@@ -55,6 +55,7 @@ The following are a list of some of the features/changes that should be consider
 - Map out data schema via simple models (JS Classes)
 - Scrub & escape incoming data from forms
 - Update UI with filtering, sorting, and pagination
+- Proper deployment pipeline for production, docker-compose is limited
 
 ___
 
