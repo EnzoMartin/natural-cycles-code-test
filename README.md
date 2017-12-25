@@ -19,6 +19,20 @@ Repository containing code challenge/test from Natural Cycles, original prompt i
 - Run `npm run db:up`
 - Run `npm run dev`
 
+## Environment variables
+
+| Name | Default | Description |
+| ------------- | ------------- |  ------------- |
+| NODE_ENV | `development` | Used to determine whether to run in production mode |
+| PORT | `3000` | Port to run on |
+| DB_HOST | | Address of the database host |
+| DB_USER | | Database user to connect with |
+| DB_PASSWORD | | Data user password to connect with |
+| DB_PORT | `3306` | Port of the database server |
+| DB_DATABASE | | Database to use on the database server |
+| ADMIN_USERNAME | `admin` | Username to access the site |
+| ADMIN_PASSWORD | `thereisnospoon` | Password to access the site |
+
 ___
 
 ## Prompt
