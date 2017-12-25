@@ -13,31 +13,52 @@ export default class extends Component {
   render() {
     return (
       <div>
-        <Head title="View Users" />
+        <Head title="Users" />
         <Nav />
 
-        <div className="hero">
+        <div id="users">
           <div className="row">
-            <form action="/users" method="post">
-              <div>Add a new user:</div>
-              <div>
-                <label>
-                  <input
-                    name="email"
-                    type="email"
-                    placeholder="Email (me@email.com)"
-                    defaultValue={this.props.email}
-                  />
-                </label>
-                <button type="submit">Add</button>
-              </div>
-              {this.props.error ? (
-                <div className="error">
-                  Failed to create user, email is likely invalid
-                </div>
-              ) : null}
+            <h1 className="title">Users</h1>
+          </div>
+          <div className="row">
+            <form
+              action="/users"
+              method="post"
+              id="create"
+              className={this.props.error ? 'has-error' : ''}
+            >
+              <table width="100%" cellPadding="0" cellSpacing="0" border="0">
+                <tbody>
+                  <tr>
+                    <td colSpan="2">Add a new user:</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label>
+                        <input
+                          name="email"
+                          type="email"
+                          placeholder="Email (me@email.com)"
+                          defaultValue={this.props.email}
+                        />
+                      </label>
+                    </td>
+                    <td>
+                      <button type="submit">Add</button>
+                    </td>
+                  </tr>
+                  <tr className="error">
+                    <td colSpan="2">
+                      <div className="error">
+                        Failed to create user, email is likely invalid
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </form>
           </div>
+          <hr />
           <div className="row">
             <table width="100%" cellPadding="0" cellSpacing="0" border="0">
               <thead>
@@ -57,57 +78,86 @@ export default class extends Component {
 
         <style jsx>
           {`
-            .hero {
+            hr {
+              border-bottom: 1px solid rgb(128, 55, 155);
+              border-top: none;
+              max-width: 880px;
+            }
+            h1 {
+              margin: 0;
+              text-align: left;
               width: 100%;
+            }
+            #users {
               color: #333;
               text-align: left;
-            }
-            .title {
-              margin: 0;
-              width: 100%;
-              padding-top: 80px;
-              line-height: 1.15;
-              font-size: 48px;
+              background-color: #fff;
+              border-radius: 3px;
+              padding: 14px 24px;
+              color: rgba(0, 0, 0, 0.87);
+              min-width: 400px;
+              margin: 0 8px;
+              box-shadow: 0px 2px 2px 3px rgba(0, 0, 0, 0.2);
             }
             table td,
             table th {
               text-align: left;
             }
-            .title,
-            .description {
-              text-align: center;
+            #create.has-error .error {
+              display: block;
             }
             .error {
+              display: none;
+              font-size: 13px;
               color: red;
+              margin-top: 4px;
             }
             .row {
               max-width: 880px;
-              margin: 80px auto 40px;
+              margin: 40px auto;
               display: flex;
               flex-direction: row;
               justify-content: space-around;
             }
-            .card {
-              padding: 18px 18px 24px;
-              width: 220px;
-              text-align: left;
-              text-decoration: none;
-              color: #434343;
-              border: 1px solid #9b9b9b;
+            #create {
+              width: 450px;
             }
-            .card:hover {
-              border-color: #067df7;
+            #create td {
+              padding: 0 4px;
             }
-            .card h3 {
-              margin: 0;
-              color: #067df7;
-              font-size: 18px;
+            #create input {
+              margin-top: 4px;
+              display: block;
+              border: none;
+              padding: 3px;
+              width: 100%;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.12);
             }
-            .card p {
-              margin: 0;
-              padding: 12px 0 0;
-              font-size: 13px;
-              color: #333;
+            #create input:focus {
+              margin-top: 2px;
+              border-bottom: 3px solid #5abc5a;
+            }
+            #create button {
+              margin-left: 12px;
+              border: none;
+              max-width: 70px;
+              padding: 6px 8px;
+              background-color: #5abc5a;
+              transition: all 0.1s ease;
+              width: 100%;
+              border-radius: 14px;
+              color: #fff;
+              display: block;
+              cursor: pointer;
+            }
+            #create button:hover {
+              background-color: #42a142;
+              color: rgba(255, 255, 255, 0.8);
+              border-color: #a2a2a2;
+            }
+            #create button:active {
+              background-color: #42a142;
+              color: rgba(255, 255, 255, 0.8);
             }
           `}
         </style>
