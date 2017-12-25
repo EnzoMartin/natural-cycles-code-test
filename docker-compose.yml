@@ -4,35 +4,36 @@ services:
   mysql:
     image: mysql:8
     environment:
-      - MYSQL_DATABASE="natural-cycles"
+      - MYSQL_DATABASE=natural-cycles
     volumes:
-       - /data/mysql:/var/lib/mysql
+       - /data/mysql/natural-cycles:/var/lib/mysql
     networks:
       - db
     env_file:
       - ./.env
 
   certbot:
-    image: certbot/certbot:latest
-    command: certbot --nginx certonly
+    image: palobo/certbot:latest
+    command: --non-interactive --agree-tos --email enzo.r.martin@gmail.com -t certonly --keep-until-expiring --webroot -w /var/www/letsencrypt -d natural-cycles.tech-burrow.com -d www.natural-cycles.tech-burrow.com
     volumes:
-      - /data/certbot/letsencrypt/:/var/www/letsencrypt
-      - /data/certbot/certs/:/var/certs
-      - /data/letsencrypt/etc/:/etc/letsencrypt
-      - /data/letsencrypt/var/:/var/lib/letsencrypt
+      - /data/certbot/natural-cycles/letsencrypt/:/var/www/letsencrypt
+      - /data/certbot/natural-cycles/certs/:/var/certs
+      - /data/letsencrypt/natural-cycles/etc/:/etc/letsencrypt
+      - /data/letsencrypt/natural-cycles/var/:/var/lib/letsencrypt
     links:
       - nginx
     networks:
       - server
 
   nginx:
-    image: enzomartin78/natural-cycles-code-test-nginx:master-latest
+    image: enzomartin78/natural-cycles-code-test-nginx:dev-polish-latest
     volumes:
-      - /data/nginx/logs/:/var/log/nginx
-      - /data/certbot/letsencrypt/:/var/www/letsencrypt
-      - /data/certbot/certs/:/var/certs
-      - /data/letsencrypt/etc/:/etc/letsencrypt
-      - /data/letsencrypt/var/:/var/lib/letsencrypt
+      - /data/nginx/natural-cycles/logs/:/var/log/nginx
+      - /data/certbot/natural-cycles/letsencrypt/:/var/www/letsencrypt
+      - /data/certbot/natural-cycles/certs/:/var/certs
+      - /data/letsencrypt/natural-cycles/etc/:/etc/letsencrypt
+      - /data/letsencrypt/natural-cycles/var/:/var/lib/letsencrypt
+      - /data/nginx/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro
     ports:
       - "80:80"
       - "443:443"
@@ -42,9 +43,10 @@ services:
       - server
 
   service:
-    image: enzomartin78/natural-cycles-code-test:master-latest
+    image: enzomartin78/natural-cycles-code-test:dev-polish-latest
     environment:
-      - NODE_ENV="production"
+      - NODE_ENV=production
+      - PORT=3000
     restart: unless-stopped
     depends_on:
       - mysql
