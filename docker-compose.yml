@@ -42,6 +42,23 @@ services:
     networks:
       - server
 
+  db_migrate:
+    image: enzomartin78/natural-cycles-code-test:dev-polish-latest
+    command: 'npm run db:up'
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    networks:
+      - db
+      - server
+    env_file:
+      - ./.env
+
   service:
     image: enzomartin78/natural-cycles-code-test:dev-polish-latest
     environment:
@@ -50,6 +67,7 @@ services:
     restart: unless-stopped
     depends_on:
       - mysql
+      - db_migrate
     links:
       - mysql
     networks:
