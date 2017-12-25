@@ -36,6 +36,12 @@ Repository containing code challenge/test from Natural Cycles, original prompt i
 
 ## Production consideration
 
+Current implementation is "goodly" (good enough) production ready, with some caveats:
+- Admin login is handled via env vars
+- Data updates are only noticeable on page reload
+- No data sanitization
+- No pagination, sorting, filtering
+
 The following are a list of some of the features/changes that should be considered to run this as a production service:
 
 - Use a proper administrator authentication method against a database with bcrypt encrypted passwords
@@ -48,6 +54,7 @@ The following are a list of some of the features/changes that should be consider
 - Add admin account failed login attempts lockout
 - Map out data schema via simple models (JS Classes)
 - Scrub & escape incoming data from forms
+- Update UI with filtering, sorting, and pagination
 
 ___
 
