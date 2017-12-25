@@ -164,6 +164,10 @@ class Service {
   }
 
   setupRoutes() {
+    this.server.get('/', (req, res) => {
+      res.redirect('/users')
+    })
+
     this.server.get('/users', this.ensureAuthenticated, (req, res) => {
       users.get((err, data) => {
         if (err) {
