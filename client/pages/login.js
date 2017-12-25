@@ -4,7 +4,7 @@ import Nav from '../components/nav'
 export default () => (
   <div>
     <Head title="Login" />
-    <Nav />
+    <Nav hideRightNav />
 
     <div className="hero">
       <h1 className="title">Welcome!</h1>

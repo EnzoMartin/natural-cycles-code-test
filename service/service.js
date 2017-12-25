@@ -3,6 +3,7 @@ const config = require('./config')
 const express = require('express')
 const async = require('async')
 const next = require('next')
+const multer = require('multer')
 
 // Routes
 const users = require('./modules/users')
@@ -20,6 +21,7 @@ const LocalStrategy = require('passport-local').Strategy
 const { service, logger, db, storeConfig, signals, admin } = config
 const app = next(config.next)
 const handle = app.getRequestHandler()
+const parseForm = multer()
 
 class Service {
   constructor() {
@@ -143,7 +145,7 @@ class Service {
   }
 
   setupAuthRoutes() {
-    this.server.get('/logout', (req, res) => {
+    this.server.get('/logout', this.ensureAuthenticated, (req, res) => {
       req.logout()
       return res.redirect('/login')
     })
@@ -191,6 +193,7 @@ class Service {
     this.server.put(
       '/users/:id',
       this.ensureAuthenticated,
+      parseForm.array(),
       (req, res, next) => {
         users.update(req.params.id, req.body.email, err => {
           if (err) {
