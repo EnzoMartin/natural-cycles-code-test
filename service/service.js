@@ -145,7 +145,7 @@ class Service {
   }
 
   setupAuthRoutes() {
-    this.server.get('/logout', (req, res) => {
+    this.server.get('/logout', this.ensureAuthenticated, (req, res) => {
       req.logout()
       return res.redirect('/login')
     })
