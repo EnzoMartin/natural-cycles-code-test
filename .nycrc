@@ -4,10 +4,11 @@
     "coverage/**/*",
     "node_modules/**/*",
     "service/start.js",
-    "service/config.js",
     "migrations/**/*",
     "test/**/*",
-    "client/**/*"
+    "nginx/**/*",
+    "client/**/*",
+    "prettier.config.js"
   ],
   "reporter": [
     "html",

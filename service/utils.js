@@ -19,4 +19,12 @@ module.exports = {
       email
     )
   },
+  /**
+   * Verify that provided ID is correctly formatted
+   * @param {String} id
+   * @returns {boolean}
+   */
+  verifyUUid: id => {
+    return /(\w{8}(-\w{4}){3}-\w{12}?)/g.test(id)
+  },
 }

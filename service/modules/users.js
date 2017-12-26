@@ -1,6 +1,6 @@
 const uuid = require('uuid/v4')
 
-const { getDbDate, verifyEmail } = require('../utils')
+const { getDbDate, verifyEmail, verifyUUid } = require('../utils')
 const { db } = require('../config')
 
 module.exports = {
@@ -42,11 +42,15 @@ module.exports = {
   remove: (id, callback) => {
     const dateTime = getDbDate()
 
-    return db.query(
-      'UPDATE users SET modifiedAt = ?, deletedAt = ? WHERE id = ?',
-      [dateTime, dateTime, id],
-      callback
-    )
+    if (verifyUUid(id)) {
+      return db.query(
+        'UPDATE users SET modifiedAt = ?, deletedAt = ? WHERE id = ?',
+        [dateTime, dateTime, id],
+        callback
+      )
+    } else {
+      return callback(new Error('ID is not valid'))
+    }
   },
   /**
    * Update an existing user
@@ -56,14 +60,18 @@ module.exports = {
    * @returns {*}
    */
   update: (id, email, callback) => {
-    if (verifyEmail(email)) {
-      return db.query(
-        'UPDATE users SET email = ?, modifiedAt = ? WHERE id = ?',
-        [email, getDbDate(), id],
-        callback
-      )
+    if (verifyUUid(id)) {
+      if (verifyEmail(email)) {
+        return db.query(
+          'UPDATE users SET email = ?, modifiedAt = ? WHERE id = ?',
+          [email, getDbDate(), id],
+          callback
+        )
+      } else {
+        return callback(new Error('Email is not valid'))
+      }
     } else {
-      return callback(new Error('Email is not valid'))
+      return callback(new Error('ID is not valid'))
     }
   },
 }
