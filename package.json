@@ -28,8 +28,6 @@
     "db:down": "db-migrate down --verbose"
   },
   "dependencies": {
-    "@fortawesome/fontawesome": "^1.0.1",
-    "@fortawesome/fontawesome-free-solid": "^5.0.1",
     "async": "^2.6.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
