@@ -25,8 +25,8 @@ const logger = bunyan.createLogger({
 
 const db = mysql.createPool({
   host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  user: process.env.DB_USER || process.env.MYSQL_USER,
+  password: process.env.DB_PASSWORD || process.env.MYSQL_PASSWORD,
   port: process.env.DB_PORT || 3306,
   database: process.env.DB_DATABASE,
   connectionLimit: 10,
