@@ -33,6 +33,23 @@ Repository containing code challenge/test from Natural Cycles, original prompt i
 | DB_DATABASE | | Database to use on the database server |
 | ADMIN_USERNAME | `admin` | Username to access the site |
 | ADMIN_PASSWORD | `thereisnospoon` | Password to access the site |
+| MYSQL_ROOT_PASSWORD | | Root password for the database container |
+| MYSQL_USER | | User to use for the database container, will also be used by `DB_USER` |
+| MYSQL_PASSWORD | | Password to use for the database container, will also be used by `DB_PASSWORD` |
+
+## Running in production
+
+* Install latest stable Docker CE
+* Create a `.env` file in the same directory as the `docker-compose.yml` file
+* Populate the `.env` file with at least the following variables populated:
+  * MYSQL_ROOT_PASSWORD
+  * MYSQL_USER
+  * MYSQL_PASSWORD
+* Run `docker-compose up`
+* ???
+* Profit!
+
+**Note:** `DB_USER` and `DB_PASSWORD` should match `MYSQL_USER` and `MYSQL_PASSWORD` if all 4 are set in the `.env` file
 
 ## Production consideration
 

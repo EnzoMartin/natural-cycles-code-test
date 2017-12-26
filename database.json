@@ -7,20 +7,12 @@
     "password": {"ENV": "DB_PASSWORD"},
     "database": {"ENV": "DB_DATABASE"}
   },
-  "test": {
-    "driver": "mysql",
-    "host": {"ENV": "DB_HOST"},
-    "user": {"ENV": "DB_USER"},
-    "port": {"ENV": "DB_PORT"},
-    "password": {"ENV": "DB_PASSWORD"},
-    "database": {"ENV": "DB_DATABASE"}
-  },
   "production": {
     "driver": "mysql",
     "host": {"ENV": "DB_HOST"},
-    "user": {"ENV": "DB_USER"},
+    "user": {"ENV": "MYSQL_USER"},
     "port": {"ENV": "DB_PORT"},
-    "password": {"ENV": "DB_PASSWORD"},
+    "password": {"ENV": "MYSQL_PASSWORD"},
     "database": {"ENV": "DB_DATABASE"}
   }
 }

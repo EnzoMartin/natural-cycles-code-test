@@ -1,12 +1,13 @@
 version: "3"
 services:
 
-  mysql:
+  database:
     image: mysql:8
     environment:
       - MYSQL_DATABASE=natural-cycles
     volumes:
        - /data/mysql/natural-cycles:/var/lib/mysql
+    restart: unless-stopped
     networks:
       - db
     env_file:
@@ -34,6 +35,7 @@ services:
       - /data/letsencrypt/natural-cycles/etc/:/etc/letsencrypt
       - /data/letsencrypt/natural-cycles/var/:/var/lib/letsencrypt
       - /data/nginx/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
@@ -47,12 +49,13 @@ services:
     command: 'npm run db:up'
     environment:
       - NODE_ENV=production
+      - DB_HOST=database
+      - DB_DATABASE=natural-cycles
       - PORT=3000
-    restart: unless-stopped
     depends_on:
-      - mysql
+      - database
     links:
-      - mysql
+      - database
     networks:
       - db
       - server
@@ -63,13 +66,15 @@ services:
     image: enzomartin78/natural-cycles-code-test:master-latest
     environment:
       - NODE_ENV=production
+      - DB_HOST=database
+      - DB_DATABASE=natural-cycles
       - PORT=3000
     restart: unless-stopped
     depends_on:
-      - mysql
+      - database
       - db_migrate
     links:
-      - mysql
+      - database
     networks:
       - db
       - server
