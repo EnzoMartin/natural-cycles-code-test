@@ -1,4 +1,4 @@
-const uuid = require('uuid')
+const uuid = require('uuid/v4')
 
 const { getDbDate, verifyEmail } = require('../utils')
 const { db } = require('../config')
@@ -24,7 +24,7 @@ module.exports = {
   create: (email, callback) => {
     const data = {
       email,
-      id: uuid.v4(),
+      id: uuid(),
     }
 
     if (verifyEmail(email)) {
