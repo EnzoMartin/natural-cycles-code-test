@@ -27,24 +27,26 @@ class Service {
   constructor() {
     this.log = logger.child({ logger: 'service' })
 
+    this.server = express()
+    this.store = new Store(storeConfig, db)
+
+    // Handle the Docker kill signals and attempt a graceful shutdown
+    signals.forEach(signal => {
+      process.once(signal, () => {
+        this.stop()
+      })
+    })
+
+    this.setupMiddleware()
+    this.setupAuth()
+    this.setupAuthRoutes()
+    this.setupRoutes()
+  }
+
+  initialize() {
     app
       .prepare()
       .then(() => {
-        this.server = express()
-
-        this.store = new Store(storeConfig, db)
-
-        // Handle the Docker kill signals and attempt a graceful shutdown
-        signals.forEach(signal => {
-          process.once(signal, () => {
-            this.stop()
-          })
-        })
-
-        this.setupMiddleware()
-        this.setupAuth()
-        this.setupAuthRoutes()
-        this.setupRoutes()
         this.start()
       })
       .catch(err => {
@@ -123,16 +125,8 @@ class Service {
         next()
       }
     } else {
-      res.format({
-        'text/html': () => {
-          req.session.redirectTo = req.originalUrl
-          res.redirect('/login')
-        },
-        'application/json': () => {
-          res.status(401)
-          res.json({ error: 'Not authenticated' })
-        },
-      })
+      req.session.redirectTo = req.originalUrl
+      res.redirect('/login')
     }
   }
 

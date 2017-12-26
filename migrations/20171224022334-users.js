@@ -1,5 +1,5 @@
 const async = require('async')
-const uuid = require('uuid')
+const uuid = require('uuid/v4')
 const { getDbDate } = require('../service/utils')
 
 let dbm
@@ -34,37 +34,37 @@ exports.up = function(db, callback) {
         db,
         'users',
         ['id', 'email'],
-        [uuid.v4(), 'picard@hogwarts.com']
+        [uuid(), 'picard@hogwarts.com']
       ),
       db.insert.bind(
         db,
         'users',
         ['id', 'email'],
-        [uuid.v4(), 'riddick@mylittlepony.com']
+        [uuid(), 'riddick@mylittlepony.com']
       ),
       db.insert.bind(
         db,
         'users',
         ['id', 'email'],
-        [uuid.v4(), 'logan@mordor.com']
+        [uuid(), 'logan@mordor.com']
       ),
       db.insert.bind(
         db,
         'users',
         ['id', 'email'],
-        [uuid.v4(), 'starlord@zune.com']
+        [uuid(), 'starlord@zune.com']
       ),
       db.insert.bind(
         db,
         'users',
         ['id', 'email'],
-        [uuid.v4(), 'marco@italianstallions.com']
+        [uuid(), 'marco@italianstallions.com']
       ),
       db.insert.bind(
         db,
         'users',
         ['id', 'email', 'deletedAt'],
-        [uuid.v4(), 'tammy@birdperson.com', getDbDate()]
+        [uuid(), 'tammy@birdperson.com', getDbDate()]
       ),
     ],
     callback

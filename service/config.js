@@ -1,10 +1,7 @@
 /* eslint-disable no-process-env */
 
-const dotenv = require('dotenv')
 const bunyan = require('bunyan')
 const Promise = require('bluebird')
-
-dotenv.config()
 
 // Promises suck but Bluebird makes them suck less
 Promise.promisifyAll(require('mysql/lib/Connection').prototype)
