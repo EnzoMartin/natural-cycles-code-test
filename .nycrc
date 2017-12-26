@@ -1,0 +1,18 @@
+{
+  "check-coverage": false,
+  "exclude": [
+    "coverage/**/*",
+    "node_modules/**/*",
+    "service/start.js",
+    "service/config.js",
+    "migrations/**/*",
+    "test/**/*",
+    "client/**/*"
+  ],
+  "reporter": [
+    "html",
+    "text-summary"
+  ],
+  "cache": true,
+  "all": true
+}
