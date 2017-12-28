@@ -35,10 +35,6 @@ const Head = props => (
     <style>
       @import url('https://fonts.googleapis.com/css?family=Roboto');
     </style>
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
   </NextHead>
 )
 

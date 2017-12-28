@@ -8,4 +8,5 @@ module.exports = {
     return config
   },
   distDir: '../.build',
+  poweredByHeader: false,
 }

@@ -100,7 +100,7 @@ class Service {
     this.server.use((req, res, next) => {
       res.set({
         'X-XSS-Protection': '1; mode=block',
-        'Strict-Transport-Security': true,
+        'Strict-Transport-Security': 'max-age=1209600',
         'X-Content-Type-Options': 'nosniff',
         'x-frame-options': 'sameorigin',
         'X-Frame-Options': 'deny',
@@ -149,6 +149,8 @@ class Service {
         ],
       })
     )
+
+    this.server.use('/static', express.static('./client/static'))
 
     this.server.use(
       session({
