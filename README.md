@@ -36,16 +36,22 @@ Repository containing code challenge/test from Natural Cycles, original prompt i
 | MYSQL_ROOT_PASSWORD | | Root password for the database container |
 | MYSQL_USER | | User to use for the database container, will also be used by `DB_USER` |
 | MYSQL_PASSWORD | | Password to use for the database container, will also be used by `DB_PASSWORD` |
+| EMAIL | | Email to register SSL certificates to |
+| HOST | | Comma-delimited list of the domain(s) the application will be served on |
 
 ## Running in production
 
 * Install latest stable Docker CE
-* Create a `.env` file in the same directory as the `docker-compose.yml` file
-* Populate the `.env` file with at least the following variables populated:
+* Create a directory wherever and `cd` to that directory
+* Copy over the `docker-compose.yml` and `start.sh` files
+* Mark the `start.sh` script executable `chmod +x ./start.sh`
+* Create a `.env` file and populate it with at least the following variables populated:
   * MYSQL_ROOT_PASSWORD
   * MYSQL_USER
   * MYSQL_PASSWORD
-* Run `docker-compose up`
+  * EMAIL
+  * HOST
+* Run `./start.sh` (**Note:** It can take 5-10mins to generate the dhparam file on first run)
 * ???
 * Profit!
 

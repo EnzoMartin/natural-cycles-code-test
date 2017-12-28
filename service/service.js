@@ -37,6 +37,11 @@ class Service {
       })
     })
 
+    // Delicious security
+    if (!config.isDev) {
+      this.setupCORS()
+    }
+
     this.setupMiddleware()
     this.setupAuth()
     this.setupAuthRoutes()
@@ -77,6 +82,47 @@ class Service {
     this.server.use(passport.session())
   }
 
+  redirectNonWww(req, res, next) {
+    const host = req.headers.host
+    if (host.slice(0, 4) !== 'www.') {
+      return res.redirect(
+        301,
+        `${req.protocol}://www.${host}${req.originalUrl}`
+      )
+    } else {
+      next()
+    }
+  }
+
+  setupCORS() {
+    this.server.use(this.redirectNonWww)
+
+    this.server.use((req, res, next) => {
+      res.set({
+        'X-XSS-Protection': '1; mode=block',
+        'Strict-Transport-Security': 'max-age=1209600',
+        'X-Content-Type-Options': 'nosniff',
+        'x-frame-options': 'sameorigin',
+        'X-Frame-Options': 'deny',
+        'x-xss-protection': "'1; mode=block' always",
+        'content-security-policy': [
+          "default-src https: 'self' 'unsafe-inline' data:",
+          "child-src 'self' https://www.google.com/",
+          "media-src 'self'",
+          "object-src 'self'",
+          "script-src https: 'self' 'unsafe-inline' https://google-analytics.com https://*.doubleclick.net https://google.com",
+          "connect-src https: 'self' wss: 'self'",
+          "font-src https: 'self' data:",
+          "img-src https: 'self' data: https://google-analytics.com https://google.com https://*.doubleclick.net",
+          "style-src https: 'self' 'unsafe-inline'",
+          "frame-ancestors 'self'",
+        ].join('; '),
+      })
+
+      next()
+    })
+  }
+
   setupMiddleware() {
     this.server.use(bodyParser.urlencoded({ extended: false }))
     this.server.use(bodyParser.json())
@@ -103,6 +149,8 @@ class Service {
         ],
       })
     )
+
+    this.server.use('/static', express.static('./client/static'))
 
     this.server.use(
       session({
