@@ -44,13 +44,14 @@ Repository containing code challenge/test from Natural Cycles, original prompt i
 * Install latest stable Docker CE
 * Create a directory wherever and `cd` to that directory
 * Copy over the `docker-compose.yml` and `start.sh` files
+* Mark the `start.sh` script executable `chmod +x ./start.sh`
 * Create a `.env` file and populate it with at least the following variables populated:
   * MYSQL_ROOT_PASSWORD
   * MYSQL_USER
   * MYSQL_PASSWORD
   * EMAIL
   * HOST
-* Run `./start.sh`
+* Run `./start.sh` (**Note:** It can take 5-10mins to generate the dhparam file on first run)
 * ???
 * Profit!
 
