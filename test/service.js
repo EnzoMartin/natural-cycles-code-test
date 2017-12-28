@@ -96,5 +96,39 @@ describe('service module', () => {
         expect(redirectSpy.calledWith('/users')).toBe(true)
       })
     })
+
+    describe('redirectNonWww', () => {
+      it('redirects non-www to www', () => {
+        const req = {
+          ...request,
+          headers: {
+            host: 'test.com',
+          },
+          protocol: 'https',
+          originalUrl: '/custom',
+        }
+
+        service.redirectNonWww(req, res, nextSpy)
+        expect(nextSpy.notCalled).toBe(true)
+        expect(
+          redirectSpy.calledWith(
+            301,
+            `${req.protocol}://www.test.com${req.originalUrl}`
+          )
+        ).toBe(true)
+      })
+
+      it('does not redirect www', () => {
+        const req = {
+          ...request,
+          headers: {
+            host: 'www.test.com',
+          },
+        }
+
+        service.redirectNonWww(req, res, nextSpy)
+        expect(nextSpy.calledOnce).toBe(true)
+      })
+    })
   })
 })
