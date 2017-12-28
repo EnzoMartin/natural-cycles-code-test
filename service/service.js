@@ -136,7 +136,7 @@ class Service {
       })
     )
 
-    /* this.server.use(
+    this.server.use(
       bunyan({
         logger: this.log,
         // Who hates console spam? Me!
@@ -148,7 +148,7 @@ class Service {
           'response-hrtime',
         ],
       })
-    )*/
+    )
 
     this.server.use(
       session({
